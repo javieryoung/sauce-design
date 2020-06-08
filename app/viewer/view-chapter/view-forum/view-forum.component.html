@@ -1,0 +1,41 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+</skeleton>
+
+
+
+
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-9 col-12 shadow p-lg-5 p-3 bg-white" [@fadeIn] *ngIf="forum">
+
+        <div *ngFor="let p of forum.posts" class="d-flex border-bottom py-3 justify-content-between align-items-center post">
+            <div>
+                <img src="{{p.user.imageUrl()}}" alt="{{p.user.fullName()}}" class="profile-picture rounded-circle mr-3" width="50px">
+                <a [routerLink]="'post/' + p.id">{{p.title}}</a>
+            </div>
+            <div>
+                <span class="p-3">{{p.user.fullName()}}</span>
+                <span class="p-3">{{p.responses.length || 0}}</span>
+            </div>
+        </div>
+        <div *ngIf="forum.posts.length == 0" class="py-3 border-bottom">
+            <i>No hay posts en este foro </i>
+        </div>
+        <button class="btn btn-secondary mt-3 font-weight-bold d-flex pointer" [routerLink]="'post'"> <app-icon icon="plus" color="white" class="mr-2"></app-icon> Nuevo post </button>
+    </div>
+</div>

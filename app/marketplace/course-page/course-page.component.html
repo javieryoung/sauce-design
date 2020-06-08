@@ -1,0 +1,81 @@
+
+<div class="row justify-content-center" [ngBusy]="busy" *ngIf="course">
+    <div class="col-10 bg-white px-5 py-5 shadow">
+        <div class="row">
+            <div class="col-12" [class.pointer]="(course.free_elements && course.free_elements.length) || course.video" (click)="freeElements()">
+                <img src="{{course.getCoverImage()}}" alt="{{course.title}}" class="w-100 radius">
+                <img src="/assets/images/play.png" alt="play" class="play" *ngIf="(course.free_elements && course.free_elements.length) || course.video">
+            </div>
+            <div class="col-5 py-5 d-flex align-items-center">
+                <div>
+                    <img src="{{course.getImage()}}" alt="{{course.title}}" class="radius course-image">
+                </div>
+                <div class="pl-3">
+                    <div class="d-flex flex-column justify-content-center"> 
+                        <h1 class="mb-0 mr-2"> 
+                            <strong class="text-primary"> ${{course.price}}</strong> 
+                        </h1>
+                        <p class="mb-0" *ngIf="course.total_price && course.total_price > course.price"> 
+                            <span class="tachated mr-2"> ${{course.total_price}} </span> 
+                            <strong class="text-danger"> {{(course.price * 100) / course.total_price | number: '1.0-0'}}% de descuento </strong>
+                        </p>
+                    </div>
+                    <app-buy-button (click)="buy()"></app-buy-button>
+                </div>
+            </div>
+            <div class="col-7 py-5 d-flex flex-column justify-content-center">
+                <div [innerHtml]="course.description"></div>
+                <p class="text-warning h5 mt-2" *ngIf="course.students && course.students >= 10"> {{course.students}} estudiantes prepararon este curso  </p>
+            </div>
+
+        </div>
+
+        <div class="row border-top border-bottom border-grey py-5">
+            <div *ngFor="let i of course.instructors" class="col-12">
+                <app-instructor-detail [instructor]="i"></app-instructor-detail>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <div class="col-12">
+                <h2 class="text-blue">
+                    Contenido del curso
+                </h2>
+            </div>
+            <div class="col-md-6 col-12">
+                <ng-container *ngFor="let c of course.chapters; let i = index">
+                    <div *ngIf="i < course.chapters.length/2">
+                        <h3 class="text-dark font-weight-regular py-3 pointer m-0" (click)="c.expand = !c.expand"> {{ c.expand ? '-' : '+' }} {{c.title}} </h3>
+                        <div *ngIf="c.expand">
+                            <div *ngFor="let tab of c.tabs">
+                                <div *ngFor="let e of tab.elements" class="p-3 my-1 bg-info d-flex">
+                                    <app-icon class="mr-2" icon="{{e.getIcon()}}"></app-icon>
+                                    <span>{{e.title}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </ng-container>
+            </div>
+            <div class="col-md-6 col-12">
+                <ng-container *ngFor="let c of course.chapters; let i = index">
+                    <div *ngIf="i >= course.chapters.length/2">
+                        <h3 class="text-dark font-weight-regular py-3 pointer m-0" (click)="c.expand = !c.expand">{{ c.expand ? '-' : '+' }} {{c.title}} </h3>
+                        <div *ngIf="c.expand">
+                            <div *ngFor="let tab of c.tabs">
+                                <div *ngFor="let e of tab.elements" class="p-3 my-1 bg-info d-flex">
+                                    <app-icon class="mr-2" icon="{{getElementIcon(e.type)}}"></app-icon>
+                                    <span>{{e.title}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </ng-container>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>

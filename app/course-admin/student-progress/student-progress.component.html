@@ -1,0 +1,37 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+
+</skeleton>
+
+<div class="row justify-content-center mb-4" [ngBusy]="busy">
+    <div class="col-lg-9 col-12 shadow bg-white p-lg-5 p-3" [@fadeIn]>
+        
+        
+        <div *ngFor="let c of chapters" class="mb-3 pb-3 border-bottom">
+            <h2 class="mb-2">{{c.title}}</h2>
+            
+            <ng-container *ngFor="let e of c.elements">
+                <div *ngIf="e.type == 'Entrega'" class="p-4 bg-info mb-3">
+                    <h4 class="mb-0">{{e.title}} <span class="text-grey ml-1">entrega</span> </h4>
+                    <div [innerHtml]="e.text"></div>
+                    <button class="btn btn-secondary text-white rounded-0 font-weight-bold mt-1" [routerLink]="'entrega/' + e.id"> Ver entregas </button>
+                </div>
+                <div *ngIf="e.type == 'Evaluación'" class="p-4 bg-info mb-3">
+                    <h4 class="mb-0">{{e.title}} <span class="text-grey ml-1">evaluación</span> </h4>
+                    <div [innerHtml]="e.text"></div>
+                    <button class="btn btn-warning text-white rounded-0 font-weight-bold mt-1" [routerLink]="'evaluacion/' + e.id"> Ver respuestas </button>
+                </div>
+            </ng-container>
+            
+        </div>
+
+
+    </div>
+</div>

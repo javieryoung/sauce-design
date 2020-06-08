@@ -1,0 +1,23 @@
+<div>
+    <div *ngFor="let ex of evaluation.exercises" class="border-bottom py-3">
+        <div class="mb-3" [innerHTML]="ex.text"></div>
+
+        <div *ngIf="findResponse(ex.id, ex.type)">
+            <div *ngIf="ex.type == 'Texto libre'">
+                <div [innerHTML]="findResponse(ex.id, ex.type)"></div>
+            </div>
+
+            <div *ngIf="ex.type == 'Multiple opción'">
+                <span *ngFor="let r of findResponse(ex.id, ex.type)">{{r}} </span>
+            </div>
+
+            <div *ngIf="ex.type == 'Única opción'">
+                <div [innerHTML]="findResponse(ex.id, ex.type)"></div>
+            </div>
+
+        </div>
+        <div *ngIf="!findResponse(ex.id, ex.type)">
+            <i class="text-dark"> No completó </i>
+        </div>
+    </div>
+</div>

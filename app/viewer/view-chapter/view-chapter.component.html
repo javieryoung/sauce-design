@@ -1,0 +1,88 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-12 p-lg-5 p-3">
+            <h1 class="skeleton"></h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <div class="col-12 skeleton"></div>
+            <div class="col-12 skeleton"></div>
+            <div class="col-12 skeleton"></div>
+        </div>
+    </div>
+</skeleton>
+
+
+<app-admin-menu *ngIf="canEdit && courseId" [courseId]="courseId"></app-admin-menu>
+
+<div class="row justify-content-center mb-2 mt-3" *ngIf="chapter">
+    <div class="col-lg-9 col-12 text-secondary d-flex align-items-center position-relative" [@fadeIn]>
+        <app-icon icon="angle-left" size="big" color="secondary" class="pointer px-2" [routerLink]="'/ver/' + chapter.course.id"></app-icon>
+        <h1 class="m-0" (click)="toggleShow()">{{chapter.title}} </h1>        
+    </div>
+</div>
+
+<div class="row justify-content-center mb-4" *ngIf="chapter" [ngBusy]="busy">
+    <div class="col-lg-9 col-12 " [@fadeIn]>
+        <div class="tabs-container" *ngIf="showTabs">
+            <ul class="nav nav-tabs m-0 tabs">
+                <li class="nav-item pointer" *ngFor="let t of chapter.tabs" (click)="selectTab(t)">
+
+                    <a class="nav-link text-dark d-flex" [class.shadow]="currentTab && t.id == currentTab.id" [class.text-grey]="!t.published" [class.active]="currentTab && t.id == currentTab.id">
+                        <span>{{t.title}} </span>
+                        <app-icon *ngIf="canEdit" (click)="editTab(t)" icon="edit" color="light" class="pl-2 pointer"></app-icon>
+                        <app-icon *ngIf="!t.published" icon="lock-circle" color="grey" class="pl-2"></app-icon>
+                    </a>
+                    
+
+                </li>
+                <li class="nav-item pointer" (click)="addTab(t)" *ngIf="canEdit">
+                    <a class="nav-link text-dark d-flex">
+                        <app-icon icon="plus"></app-icon>
+                    </a>
+                </li>
+
+                <li class="nav-item pointer" *ngIf="canEdit">
+                    <a class="nav-link">
+                            <app-reorder [items]="chapter.tabs" [wat]="'title'" [title]="'Reordenar tabs'" (saved)="updateTabOrder()"></app-reorder>    
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="d-flex flex-column border border-top-0 w-100 p-lg-4 p-3 bg-white shadow" [ngBusy]="busy" *ngIf="!chapter.tabs || chapter.tabs.length == 0 || noPublishedTab">
+            <div *ngIf="!canEdit">
+                <strong>Parece que aquí no hay contenido ¯\_(ツ)_/¯</strong>
+                <p>Cuando el encargado del curso cargue material lo podrás ver</p>
+            </div>
+            
+        
+            <div *ngIf="canEdit">
+                <h3>Capítulo vacío</h3>
+                <div class="d-flex" *ngIf="!chapter.tabs || !chapter.tabs.length">
+                    El contenido de los capítulos está separado en tabs ¡Para agregar tu primera tab clickeá en el <app-icon icon="plus" class="mx-1"></app-icon> de arriba!
+                </div>
+                <div class="d-flex" *ngIf="chapter.tabs.length && noPublishedTab">
+                    Parece que todas las tabs están bloqueadas ¡Clickea en <app-icon icon="edit" class="mx-1"></app-icon> de la tab para cambiar su estado!
+                </div>
+            </div>
+        </div>
+        <router-outlet></router-outlet>
+
+    </div>
+</div>

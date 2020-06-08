@@ -1,0 +1,38 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+</skeleton>
+
+
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-9 col-12 shadow p-lg-5 p-3 bg-white" *ngIf="user" [@fadeIn] [ngBusy]="busy">
+        <h1>Evaluación</h1>
+        <div class="d-flex flex-column">
+
+            <div *ngFor="let er of user.evaluation_responses" class="my-3 bg-info p-lg-5 p-3">
+                <h3>Completada el {{er.created_at | date:'dd/MM/yyyy HH:mm'}}</h3>
+
+                <h3 class="mt-5">Respuestas</h3>
+                <app-evaluation-response [evaluation]="er.evaluation" [response]="er"></app-evaluation-response>
+                
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div>
+    <div class="d-flex justify-content-between">
+        <div>
+            <h3 *ngIf="element.title" class="text-blue mb-3">{{element.title}} </h3>
+            <div [innerHTML]="element.text"></div>
+        </div>
+        <div class="p-2 d-flex flex-column align-items-center"> 
+            <app-icon icon="circle" (click)="complete(element)" *ngIf="showCompleted && !element.completed" class="pointer" size="big"></app-icon>
+            <app-icon icon="done-circle" (click)="complete(element)" color="primary" *ngIf="showCompleted && element.completed" class="pointer" size="big"></app-icon>
+            <app-icon icon="edit" (click)="openElementEditor(element)" *ngIf="canEdit"></app-icon>
+        </div>
+    </div>
+    
+    
+    
+
+
+    <div *ngIf="element.type == 'Descarga'">
+        <a *ngIf="element.file.database_file_name" href="{{element.file.getUrl()}}" target="_blank" class="mt-2 d-flex"> <app-icon icon="clip" color="primary" class="mr-2"></app-icon> Descargar {{element.file.file_name}} </a>
+        <span *ngIf="!element.file.database_file_name" class="mt-2"><i>El archivo aún no se ha subido</i></span>
+    </div>
+
+    <div *ngIf="element.type == 'Foro' && element.forum">
+        <div class="border px-3 mt-2 py-2 pointer text-secondary border d-flex" [routerLink]="'foro/' + element.forum.id"> <app-icon icon="chat6" color="secondary" class="mr-2"></app-icon> Entrar al foro </div>
+    </div>
+
+    <div *ngIf="element.type == 'Evaluación'">
+        <p *ngIf="element.evaluation.expires_at"><strong> Fecha de entrega:</strong> {{element.evaluation.expires_at | date:'dd/MM/yyyy HH:mm'}}</p>
+        <button class="btn btn-warning rounded-0 text-white font-weight-bold mt-2" [routerLink]="'/ver/' + courseId + '/capitulo/' + chapterId + '/tab/' + tabId + '/evaluacion/' + element.id"> Realizar la evaluación </button>
+    </div>
+
+    <div *ngIf="element.type == 'Video'">
+        <div *ngIf="element.video && element.video.link">
+            <iframe width="560" height="315" [src]="fixUrl(element.video.link)" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div *ngIf="!element.video || !element.video.link">
+            <i>El video no fué cargado correctamente</i>
+        </div>
+    </div>
+
+    <div *ngIf="element.type == 'Entrega'">
+
+        <div *ngIf="element.entregation.entregation_responses && element.entregation.entregation_responses.length">
+            <button class="btn btn-secondary font-weight-bold rounded-0" [routerLink]="'/ver/' + courseId + '/capitulo/' + chapterId + '/tab/' + tabId + '/entrega/' + element.id">Modificar y ver entregas</button>
+            <p>Ya realizaste esta entrega</p>
+        </div>
+        <div *ngIf="!element.entregation.entregation_responses || element.entregation.entregation_responses.length == 0">
+            <p *ngIf="element.entregation.expires_at"><strong> Fecha de entrega:</strong> {{element.evaluation.expires_at | date:'dd/MM/yyyy HH:mm'}}</p>
+            <button class="btn btn-secondary font-weight-bold rounded-0" [routerLink]="'entrega/' + element.id">
+                Realizar entrega
+            </button>
+        </div>
+
+    </div>
+
+
+</div>

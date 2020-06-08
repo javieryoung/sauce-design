@@ -1,0 +1,17 @@
+<div *ngIf="video && !selectedElement">
+    <app-video-player [src]="video.getUrl()"></app-video-player>
+</div>
+<app-element [element]="selectedElement" *ngIf="selectedElement" [showCompleted]="false"></app-element>
+
+<div *ngIf="video" class="p-3 bg-info d-flex border my-2 pointer" (click)="selectedElement = null;">
+    <app-icon icon="play" class="mr-2"></app-icon>
+    <span> Video introductorio</span>
+</div>
+
+
+<div *ngFor="let e of elements" class="p-3 bg-info d-flex border my-2 pointer" (click)="selectedElement = e">
+    <app-icon [icon]="e.getIcon()" class="mr-2"></app-icon>
+    <span> {{e.title}} </span>
+</div>
+
+<button class="btn btn-danger font-weight-bold text-center w-100 rounded-0 mt-4" (click)="close()">Cerrar</button>

@@ -1,0 +1,22 @@
+<app-comment [post]="post" (reply)="replyToParent()"></app-comment>
+<app-comment class="pl-3 d-block" *ngFor="let p of post.responses" [post]="p" (reply)="reply($event)"></app-comment>
+
+
+
+<div class="mt-4" id="target" *ngIf="replyingTo">
+    <div *ngIf="replyingTo.id">
+        <div class="p-2 bg-warning text-white font-weight-bold">Responder a:</div>
+        <app-comment [post]="replyingTo" [showChildren]="false" [showReply]="false"></app-comment>
+    </div>
+    <ckeditor [editor]="Editor" [(ngModel)]="text" [config]="{ placeholder: 'Respuesta...',language: 'es', toolbar: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Párrafo', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h2', title: 'Subtítulo', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h3', title: 'Cabezal', class: 'ck-heading_heading2' }
+                    ]
+                }
+            }"></ckeditor>
+    <button class="btn btn-primary rounded-0 font-weight-bold text-white col-12 py-2" showLoading [observable]="obs"
+        [content]="'Enviar'" (click)="sendPostResponse()"></button>
+</div>

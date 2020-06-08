@@ -1,0 +1,30 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+</skeleton>
+
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-9 col-12 shadow p-lg-5 p-3 bg-white" *ngIf="post">
+
+        <app-post [post]="post" [courseId]="courseId" (posted)="reloadPost()"></app-post>
+        
+    </div>
+</div>

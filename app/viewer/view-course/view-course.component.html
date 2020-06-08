@@ -1,0 +1,83 @@
+
+
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <div class="col-12 skeleton"></div>
+            <div class="col-12 skeleton"></div>
+            <div class="col-12 skeleton"></div>
+        </div>
+    </div>
+</skeleton>
+
+
+<div class="row justify-content-center mb-4" *ngIf="course">
+    <div class="col-lg-9 col-12 shadow p-lg-5 p-3 bg-white" [@fadeIn]>
+        <h1>{{course.title}} </h1>
+        <h3 class="m-0">{{course.subtitle}}</h3>
+    </div>
+
+</div>
+
+<div class="row justify-content-center" *ngIf="course" [ngBusy]="busy">
+    <div class="col-lg-9 col-12 bg-white shadow p-lg-5 p-3" [@fadeIn]>
+
+        <div *ngIf="canEdit && course.chapters && course.chapters.length > 1" class="mb-4">
+            <app-reorder class="d-none" [items]="course.chapters" [wat]="'title'" [title]="'Reordenar capítulos'" (saved)="updateChapterOrder()"
+                #reorder></app-reorder>
+            <button class="btn btn-info font-weight-bold d-flex align-items-center px-4 py-2 rounded-0" (click)="doReorder()">
+                Reordenar capítulos
+                <app-icon icon="playlist2" class="ml-2"></app-icon>
+            </button>
+        </div>
+
+        
+        <div *ngFor="let b of course.chapters; let i = index" class="d-flex flex-column mb-5">
+            <h6 class="text-grey font-weight-bold border-bottom"> Capítulo #{{i+1}} </h6>
+            <h3 class="d-flex align-items-center">
+                {{b.title}} 
+                <app-icon *ngIf="canEdit" (click)="openChapterEditor(b)" icon="edit" color="light" class="pl-2 pointer"></app-icon> 
+            </h3>
+            <div [innerHTML]="b.description"></div>
+            <app-progress-bar [total]="b.count_elements" [number]="b.completed"></app-progress-bar>
+            <a class="text-secondary align-self-start bg-info px-3 py-2 mt-1 mb-4 font-weight-bold d-flex pointer" 
+               *ngIf="b.published"
+               [routerLink]="'/ver/' + course.id + '/capitulo/' + b.id">
+               Ir al capítulo
+               <app-icon icon="play" color="secondary" class="pr-2"></app-icon>
+            </a>
+            
+            <a class="align-self-start text-dark bg-info px-3 py-2 mt-1 mb-4 font-weight-bold d-flex" 
+               *ngIf="!b.published && !canEdit" (click)="notPublished()">
+               <app-icon icon="lock-circle" color="dark" class="pr-2"></app-icon>
+               Capítulo aún no disponible
+            </a>
+
+            <a class="align-self-start text-secondary bg-info px-3 py-2 mt-1 mb-4 font-weight-bold d-flex" 
+               *ngIf="!b.published && canEdit"
+               [routerLink]="'/ver/' + course.id + '/capitulo/' + b.id">
+               <app-icon icon="lock-circle" color="dark" class="pr-2"></app-icon>
+               Capítulo aún no disponible
+            </a>
+        </div>
+
+        <button *ngIf="canEdit" class="btn btn-secondary font-weight-bold rounded-0 p-3 w-100 btn-primary d-flex justify-content-center" (click)="openChapterEditor({published: true, description: '', title: ''})">
+            <app-icon icon="plus" color="white" class="mr-3"></app-icon>
+            <span>Agregar nuevo capítulo</span>
+        </button>
+    </div>
+</div>

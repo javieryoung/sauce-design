@@ -1,0 +1,108 @@
+
+
+
+<div class="row d-flex justify-content-center" *ngIf="!exercise.type">
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="exercise.type = 'Multiple opción'">
+            <app-icon size="huge" icon="double-check"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Multiple opción</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="exercise.type = 'Única opción'">
+            <app-icon size="huge" icon="check"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Única opción</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3" >
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="exercise.type = 'Texto libre'">
+            <app-icon size="huge" icon="text"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Texto libre</p>
+        </div>
+    </a>
+    <!--
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="exercise.type = 'Agrupar conceptos'">
+            <app-icon size="huge" icon="downloadedfile"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Agrupar conceptos</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="exercise.type = 'Ordenar conceptos'">
+            <app-icon size="huge" icon="play"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Ordenar conceptos</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="exercise.type = 'Respuesta exacta'">
+            <app-icon size="huge" icon="play"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Respuesta exacta</p>
+        </div>
+    </a>
+    -->
+</div>
+
+
+<div *ngIf="exercise.type">
+    <editable [content]="exercise.text || 'Letra de la pregunta/ejercicio...'" (changed)="exercise.text = $event" type="editor" class="d-flex my-3">
+        <div [innerHTML]="exercise.text || 'Letra de la pregunta/ejercicio...'"></div>
+    </editable>
+
+
+    <!-- EXERCISES WITH CONFIG -->
+    <div *ngIf="exercise.type == 'Texto libre'">
+        <div class="bg-light p-3">
+            <div class="d-flex mb-3">
+                <span class="font-weight-bold mr-3">Texto enriquecido</span>
+                <ui-switch [(ngModel)]="exercise.config.rich_text" size="small"></ui-switch>
+            </div>
+            <div *ngIf="exercise.config.rich_text">
+                <ckeditor [editor]="Editor" [data]="'Ejemplo de texto enriquecido'"
+                    [config]="{ language: 'es', toolbar: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+                        heading: {
+                            options: [
+                                { model: 'paragraph', title: 'Párrafo', class: 'ck-heading_paragraph' },
+                                { model: 'heading1', view: 'h2', title: 'Subtítulo', class: 'ck-heading_heading1' },
+                                { model: 'heading2', view: 'h3', title: 'Cabezal', class: 'ck-heading_heading2' }
+                            ]
+                        }
+                }"></ckeditor>
+            </div>
+            <div *ngIf="!exercise.config.rich_text">
+                <input type="text" class="form-control w-100" placeholder="Ejemplo de texto no enriquecido">
+            </div>
+        </div>
+    </div>
+    <!-- END EXERCISES WITH CONFIG -->
+
+
+    <!-- EXERCISES WITH OPTIONS -->
+    <div *ngIf="['Multiple opción','Única opción'].indexOf(exercise.type) != -1">
+        <div *ngFor="let option of exercise.options; let i = index">
+            <label class="m-0" *ngIf="exercise.type == 'Multiple opción'" class="check d-flex">
+                <editable [content]="option" (changed)="exercise.options[i] = $event" type="p" class="d-flex mb-3">
+                    <p class="m-0"> {{option}} </p>
+                </editable>
+                <app-icon icon="close" (click)="removeOption(ex,i)"></app-icon>
+
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+
+
+            <label class="m-0" *ngIf="exercise.type == 'Única opción'" class="radio d-flex">
+                <editable [content]="option" (changed)="exercise.options[i] = $event" type="p" class="d-flex mb-3">
+                    <p class="m-0"> {{option}} </p>
+                </editable>
+                <app-icon icon="close" (click)="removeOption(ex,i)"></app-icon>
+
+                <input type="radio" name="radioexample">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <button (click)="addOption()" class="btn btn-secondary rounded-0 pointer m-0"> + opción </button>
+    </div>
+    <!-- END EXERCISES WITH OPTIONS -->
+
+
+</div>

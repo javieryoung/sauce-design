@@ -1,0 +1,11 @@
+<div class="progress" style="height: 30px;" *ngIf="file.progress">
+    <div class="progress-bar" role="progressbar" [ngStyle]="{ width: file.progress + '%'}">
+        {{file.progress == 100 ? '¡Carga completa!' : file.progress + '%'}} 
+        
+    </div>
+</div>
+
+<button class="btn btn-primary rounded-0 font-weight-bold px-3 my-2 py-2" (click)="onClick()"> {{buttonText}} </button>
+
+<input type="file" #fileUpload id="fileUpload" name="fileUpload" style="display:none;" />
+<!-- MULTIPLE TODO: <input type="file" #fileUpload id="fileUpload" name="fileUpload" multiple="multiple" accept="image/*" style="display:none;" /> -->

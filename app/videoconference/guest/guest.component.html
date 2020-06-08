@@ -1,0 +1,12 @@
+<button class="btn btn-orange text-white font-weight-bold w-100 m-0 rounded-0 px-5 py-3 d-flex flex-column align-items-center pulse" (click)="join()" *ngIf="!started">
+    <span class="h2 mb-2"> Videoconferencia en proceso </span> <span class="h3"> ¡Unite clickeando aquí!</span>
+</button>
+
+<div id="meet" [hidden]="!started">
+
+</div>
+
+
+<button class="w-100 btn btn-danger text-white font-weight-bold rounded-0 py-3" *ngIf="started" (click)="end()">
+    Salir de la videoconferencia
+</button>

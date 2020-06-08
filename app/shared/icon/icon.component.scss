@@ -1,0 +1,76 @@
+@import '../../../bootstrap.scss';
+
+span {
+    display: flex;
+}
+.fill-primary  {
+    path, polygon, circle, rect[fill] {
+        fill: $primary;
+    }
+}
+.fill-secondary  {
+    path, polygon, circle, rect[fill] {
+        fill: $secondary
+    };
+}
+.fill-success  {
+    path, polygon, circle, rect[fill] {
+        fill: $success;
+    }
+}
+.fill-danger  {
+    path, polygon, circle, rect[fill] {
+        fill: $danger;
+    }
+}
+.fill-warning  {
+    path, polygon, circle, rect[fill] {
+        fill: $warning;
+    }
+}
+.fill-dark  {
+    path, polygon, circle, rect[fill] {
+        fill: $dark;
+    }
+}
+.fill-light  {
+    path, polygon, circle, rect[fill] {
+        fill: $light;
+    }
+}
+.fill-info  {
+    path, polygon, circle, rect[fill] {
+        fill: $info;
+    }
+}
+.fill-blue  {
+    path, polygon, circle, rect[fill] {
+        fill: $blue;
+    }
+}
+.fill-white  {
+    path, polygon, circle, rect[fill] {
+        fill: #fff;
+    }
+}
+
+.small {
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.big {
+    svg {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.huge {
+    svg {
+        width: 60px;
+        height: 60px;
+    }
+}

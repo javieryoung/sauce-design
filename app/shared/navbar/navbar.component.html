@@ -1,0 +1,31 @@
+<nav>
+    <div class="container-fluid shadow" [class.transparent]="url == '/'">
+        <div class="row">
+            <div class="col-12 bg-white">
+                <div class="d-flex justify-content-between py-2">
+                    <div class="logo">
+                        <!--<img src="/assets/logo.png" class="pointer" alt="logo" width="156px" [routerLink]="'/'">-->
+                        <button type="button" class="burger p-0 ml-1" (click)="menu()"><app-icon icon="menu" size="big" color="dark"></app-icon></button>
+                    </div>
+                    <div class="buttons d-flex align-items-start">
+                        
+                        <button *ngIf="!user" type="button" class="btn btn-round btn-secondary d-none d-lg-block font-weight-bold mr-2" [routerLink]="'/login'">Iniciar sesión</button>
+                        <button *ngIf="!user" type="button" class="btn btn-round btn-secondary d-none d-lg-block font-weight-bold" [routerLink]="'/registro'">Registrarse</button>
+
+                        <div *ngIf="user" class="d-flex align-items-center">
+                            <img src="{{user.imageUrl()}}" alt="profile" class="profile-picture rounded-circle">
+                            <span class="px-3 d-inline-block"> <strong class="text-shadow"> Hola, {{user.name}}</strong> </span>
+                            <!--<app-icon class="p-2 pointer" icon="settings"></app-icon>-->
+                            <div class="p-2 mr-3 pointer cart" [routerLink]="'/checkout'" *ngIf="cart && cart.length">
+                                <app-icon icon="cart"></app-icon>
+                                <span class="bg-danger text-white badge"> {{cart.length}} </span>
+                            </div>
+                            <app-icon class="p-2 mr-3 pointer" icon="door-open" (click)="logout()"></app-icon>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

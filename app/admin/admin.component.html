@@ -1,0 +1,39 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+        </div>
+    </div>
+
+</skeleton>
+
+<div class="row justify-content-center mb-2 mt-3" *ngFor="let c of courses">
+    <div class="col-lg-9 col-12 text-secondary bg-white shadow p-4 pointer" [@fadeIn] [routerLink]="'curso/' + c.id">
+        <h2>{{c.title}}</h2>
+        <h4> {{c.subtitle}} </h4>
+    </div>
+</div>
+<div class="row justify-content-center mb-2 mt-3">
+    <div class="col-lg-9 col-12 bg-white shadow p-4 pointer d-flex" [@fadeIn] [routerLink]="'curso/nuevo'">
+        <app-icon icon="plus" size="big" class="px-3"></app-icon>
+        <h2>Crear nuevo curso</h2>
+    </div>
+</div>

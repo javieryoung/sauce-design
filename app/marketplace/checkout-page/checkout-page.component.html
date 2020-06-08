@@ -1,0 +1,144 @@
+
+<div class="row justify-content-center" [ngBusy]="busy">
+    <div class="col-12 col-md-10 col-lg-8 bg-white px-5 py-5 shadow" *ngIf="step != 3">
+        <h1>Finalizar compra</h1>
+        <p>¡Cuando completes el pago tendrás acceso a todos los cursos que elegiste!</p>
+        <button class="btn btn-primary font-weight-bold rounded-0 px-3 mb-5" [routerLink]="'/dashboard'">Explorar más cursos</button>
+
+        <h3 *ngIf="items && items.length">Tu carrito:</h3>
+        <div *ngIf="!items || items.length == 0" class="d-flex flex-column">
+            <i class="h4">¡Tu carrito de compras está vacío!</i>
+            <button class="btn btn-primary font-weight-bold rounded-0 py-2 px-3 col-12 col-md-4 col-lg-3"  [routerLink]="'/dashboard'"> Explorar cursos</button>
+        </div>
+
+
+        <div class="py-3 px-2 border-bottom d-flex justify-content-between align-items-center" *ngFor="let i of items">
+            <div class="d-flex align-items-center">
+                <img [src]="i.getImage()" [alt]="i.title" class="table-image mr-4 radius">
+                <h4 class="text-blue pointer" [routerLink]="'/curso/' + i.id"> {{i.title}} </h4>
+            </div>
+            <div class="d-flex align-items-center">
+                <h5 class="mr-3 mb-0"> ${{i.price}} </h5>
+                <app-icon icon="trash" color="danger" (click)="remove(i)" class="pointer"></app-icon>
+            </div>
+        </div>
+        <div class="py-4 px-2 d-flex justify-content-end align-items-center mb-5" *ngIf="items && items.length">
+            <h4 class="mb-0 mr-3"> Total: ${{total}} </h4>
+        </div>
+
+        <div class="mt-5 p-5 bg-info" *ngIf="items && items.length">
+            <h1 class="mb-3 border-bottom">Pago</h1>
+            <p class="font-weight-bold h5 mb-4">
+                <span [class.text-primary]="step == 1" [class.pointer]="step == 2" (click)="step=1"> Medio de pago</span> <span class="mx-2"> · </span> 
+                <span [class.text-primary]="step == 2"> Datos </span> <span class="mx-2"> · </span> 
+                <span [class.text-primary]="step == 3"> ¡Listo! </span> 
+            </p>
+
+            <div *ngIf="step == 1">
+                <div class="row payment-methods py-4">
+                    <div class="col-4 pointer d-flex align-items-center flex-column" (click)="selectMethod('card')">
+                        <img src="/assets/images/card.png" alt="Tarjeta">
+                        <h4 class="font-weight-bold mt-4 text-center">Tarjeta de crédito/débito</h4>
+                    </div>
+                    <div class="col-4 pointer d-flex align-items-center flex-column" (click)="selectMethod('redpagos')">
+                        <img src="/assets/images/redpagos.png" alt="RedPagos">
+                        <h4 class="font-weight-bold mt-4 text-center">RedPagos</h4>
+                    </div>
+                    <div class="col-4 pointer d-flex align-items-center flex-column" (click)="selectMethod('abitab')">
+                        <img src="/assets/images/abitab.png" alt="Abitab">
+                        <h4 class="font-weight-bold mt-4 text-center">Abitab</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="step == 2">
+                <app-error-display [errors]="errors"></app-error-display>
+
+                <ng-container *ngIf="method == 'card'">
+                    <img src="assets/images/mercadopago.png" alt="Medios de pago">
+                    <form id="pay" ngNoForm>
+                        <div class="row my-5">
+                            <div class="col-12">
+                                <strong>Nombre en la tarjeta: </strong>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" type="text" id="cardholderName" data-checkout="cardholderName" placeholder="Ej. José Gervasio Artigas">
+                            </div>
+                        </div>
+                        <div class="row my-5">
+                            <div class="col-8">
+                                <strong>Número en la tarjeta: </strong>
+                            </div>
+                            <div class="col-4">
+                                <strong>Código de seguridad (CVC): </strong>
+                            </div>
+
+                            <div class="col-8">
+                                <input class="form-control" type="text" id="cardNumber" data-checkout="cardNumber" (input)="cardChanged($event.target.value)" [(ngModel)]="card" placeholder="Ej. 4815 1623 4210 8123" mask='0000 0000 0000 0000'>
+                            </div>
+                            <div class="col-4">
+                                <input class="form-control" type="text" id="securityCode" data-checkout="securityCode" placeholder="Ej. 123" mask='000'>
+                            </div>
+                        </div>
+                        <div class="row my-5">
+                            <div class="col-8">
+                                <strong>Cédula de Identidad: </strong>
+                            </div>
+                            <div class="col-4">
+                                <strong>Fecha de vencimiento de la tarjeta: </strong>
+                            </div>
+                            <input class="form-control" type="hidden" id="docType" data-checkout="docType" value="CI">
+                            <div class="col-8">
+                                <input class="form-control" type="text" name="ci" id="docNumber" data-checkout="docNumber" placeholder="Ej. 1.234.567-8" mask='0.000.000-0' [(ngModel)]="ci">
+                            </div>
+                            <div class="col-2">
+                                <input class="form-control" type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth" placeholder="MM" mask='00'>
+                            </div>
+                            <div class="col-2">
+                                <input class="form-control" type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" placeholder="YY" mask='00'>
+                            </div>
+                        </div>
+            
+                        <div class="d-flex align-items-center flex-column">
+                            <h4 class="price mb-2">${{total}}</h4>
+                            <button class="btn btn-secondary font-weight-bold px-3 py-3 h5 buy-button" (click)="doPay()" type="button">PAGAR</button>
+                        </div>
+                    </form>
+                </ng-container>
+
+                <ng-container *ngIf="method == 'abitab' || method == 'redpagos'">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-12 col-md-8 d-flex flex-column align-items-center mt-3">
+                            <span class="align-self-start">Ingresá tu cédula de identidad: </span>
+                            <input class="form-control mb-4" type="text" name="ci" placeholder="Ej. 1.234.567-8" mask='0.000.000-0' [(ngModel)]="ci">
+                            <button class="btn btn-secondary mt-4 font-weight-bold px-3 py-3 h5 buy-button" (click)="doPayOffline()" type="button">Generar cupón de pago</button>
+                            <p class="text-center">Se te enviará un cupón de pago a tu mail<br><strong> ¡Podes ir a cualquier {{ method == 'abitab' ? 'Abitab' : 'RedPagos'}} a completar la compra! </strong></p>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div *ngIf="step == 3" class="text-center col-10 bg-white px-5 py-5 shadow">
+        <h3 class="text-primary">¡Gracias por tu compra! :)</h3>
+
+        <ng-container *ngIf="method == 'card'">
+            <p>Cuando tu pago quede confirmado recibirás un mail y tendrás acceso al curso.<br> <strong> ¡Esto puede demorar unos minutos!</strong></p>
+        </ng-container>
+
+        <ng-container *ngIf="method == 'abitab' || method == 'redpagos'">
+            <p>Solo queda ir a realizar el pago a la red de cobranza que elegiste. ¡Y tendrás acceso al curso!</p>
+            <p>Diciendo que tenés un pago de <strong>MercadoPago</strong> y <strong>mencionando tu cédula</strong> ya podrás pagarlo</p>
+            <h4>{{ci | mask: '0.000.000-0'}}</h4>
+        </ng-container>
+        
+        <button class="btn btn-danger mt-4 font-weight-bold px-3 py-3 h5 buy-button" [routerLink]="'/'">Volver al inicio</button>
+
+    </div>
+
+
+
+</div>

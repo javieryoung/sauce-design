@@ -1,0 +1,29 @@
+<div class="row justify-content-center">
+    <div class="col-lg-10 col-12 d-flex flex-column flex-wrap">
+
+        <h1> <strong> Mis cursos</strong></h1>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2" *ngFor="let c of myCourses">
+                <app-course-square [course]="c" class="pointer p-2" [routerLink]="'/ver/' + c.id"></app-course-square>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+<div class="row justify-content-center">
+    <div class="col-lg-10 col-12 d-flex flex-column flex-wrap mt-5">
+        <h1> <strong> Explorá cursos</strong></h1>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2" *ngFor="let c of courses">
+                <app-course-square [course]="c" class="pointer p-2" [routerLink]="'/curso/' + c.id"></app-course-square>
+            </div>
+        </div>
+    </div>
+</div>

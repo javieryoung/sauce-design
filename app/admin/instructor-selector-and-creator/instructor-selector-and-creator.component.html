@@ -1,0 +1,57 @@
+<div [ngBusy]="busy">
+
+    <div class="d-flex" *ngIf="!instructor">
+        <div *ngFor="let i of instructors" class="d-flex flex-column mx-2 w-200 pointer" (click)="selectInstructor(i)">
+            <img src="{{i.getImage()}}" alt="{{i.name}}" class="img-thumbnail border-0 p-0 mb-2">
+            <h3 class="text-center">{{i.name}}</h3>
+            
+        </div>
+
+        <div class="d-flex flex-column mx-2 pointer" (click)="new()">
+            <div class="bg-light d-flex align-items-center justify-content-center img-thumbnail mb-2 w-200 flex-grow-1">
+                <app-icon icon="plus" size="big"></app-icon>
+            </div>
+            <h3 class="text-center">crear nuevo</h3>
+        </div>
+    </div>
+    <div class="d-flex flex-column" *ngIf="instructor">
+        <div class="mb-3 d-flex justify-content-center" editPhoto (click)="triggerImageUploader()">
+            <img src="{{instructor.getImage()}}" alt="{{instructor.name}}" class="img-thumbnail w-200">
+            <app-file-uploader 
+                [uploadService]="adminService" 
+                [uploadMethod]="'uploadInstructorImage'" 
+                [courseId]="instructor.id" 
+                (fileUploaded)="instructorImageUploaded($event)"
+                style="display:none;"
+                #imageUploader></app-file-uploader>
+        </div>
+        <div class="form-group mb-3">
+            <strong>Nombre</strong>
+            <input type="text" class="h3 form-control" [(ngModel)]="instructor.name" placeholder="Nombre del instructor">
+        </div>
+        <div class="form-group mb-3">
+            <strong>Título</strong>
+            <input type="text" class="form-control" [(ngModel)]="instructor.title" placeholder="Título">
+        </div>
+        <div class="form-group mb-5">
+            <strong>Descripción</strong>
+            <ckeditor 
+            [editor]="Editor" [(ngModel)]="instructor.description" 
+            [config]="{ language: 'es', toolbar: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Párrafo', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h2', title: 'Subtítulo', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h3', title: 'Cabezal', class: 'ck-heading_heading2' }
+                    ]
+                }
+            }"></ckeditor>
+        </div>
+
+        
+        <div class="row">
+            <button class="btn btn-danger rounded-0 py-2 font-weight-bold col-6" (click)="cancel()">Cancelar</button>
+            <button class="btn btn-primary rounded-0 py-2 font-weight-bold col-6" (click)="saveInstructor()">Guardar</button>
+        </div>
+    </div>
+</div>

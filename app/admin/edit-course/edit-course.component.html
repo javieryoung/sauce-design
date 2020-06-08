@@ -1,0 +1,215 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+
+    
+
+</skeleton>
+    
+
+<div class="row justify-content-center mb-2 mt-3">
+    <div class="col-lg-9 col-12 bg-white shadow p-5 course-cover-image" (click)="triggerCourseCoverImageUploader()" [@fadeIn] [ngStyle]="{background: 'url(' + course.getCoverImage() + ')'}" editPhoto>
+        <app-file-uploader 
+            [uploadService]="adminService" 
+            [uploadMethod]="'uploadCourseCoverImage'" 
+            [courseId]="course.id" 
+            (fileUploaded)="courseCoverImageUploaded($event)"
+            style="display:none;"
+            #coverImageUploader></app-file-uploader>
+    </div>
+    <div class="col-lg-9 col-12 bg-white shadow p-5" [@fadeIn]>
+        
+        <div class="course-image mb-5" editPhoto (click)="triggerCourseImageUploader()">
+            <img src="{{course.getImage()}}" alt="{{course.title}}" class="img-thumbnail">
+            <app-file-uploader 
+                [uploadService]="adminService" 
+                [uploadMethod]="'uploadCourseImage'" 
+                [courseId]="course.id" 
+                (fileUploaded)="courseImageUploaded($event)"
+                style="display:none;"
+                #imageUploader></app-file-uploader>
+        </div>
+
+        <div class="form-group mb-5">
+            <strong>Título</strong>
+            <input type="text" class="h2 form-control" [(ngModel)]="course.title" placeholder="Título del curso">
+        </div>
+        <div class="form-group mb-5">
+            <strong>Subtítulo</strong>
+            <input type="text" class="h4 form-control" [(ngModel)]="course.subtitle" placeholder="Subtítulo">
+        </div>
+        <div class="form-group mb-5">
+            <strong>Descripción</strong>
+            <ckeditor 
+            [editor]="Editor" [(ngModel)]="course.description" 
+            [config]="{ language: 'es', toolbar: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Párrafo', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h2', title: 'Subtítulo', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h3', title: 'Cabezal', class: 'ck-heading_heading2' }
+                    ]
+                }
+            }"></ckeditor>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-5">
+                    <strong>Precio total</strong>
+                    <input type="number" class="form-control" [(ngModel)]="course.total_price" placeholder="Precio total">
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-5">
+                    <strong>Precio con descuento</strong>
+                    <input type="number" class="form-control" [(ngModel)]="course.price" placeholder="Precio con descuento">
+                    <small>Si no se desea aplicar un descuento colocar el mismo precio en ambos campos</small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-5">
+                    <strong>Duración del acceso (meses)</strong>
+                    <input type="number" class="form-control" [(ngModel)]="course.duration" placeholder="Cantidad de meses en números">
+                    <small>Cuando se compre el curso, o se agregue un estudiante manualmente se le dará acceso por la cantidad de meses indicada aquí</small>
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-5">
+                    <strong>Horas de video</strong>
+                    <input type="number" class="form-control" [(ngModel)]="course.video_hours" placeholder="Horas de video en números">
+                    <small>Cantidad de horas en video que tiene el curso</small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-5 d-flex flex-column">
+                    <strong>Curso visible</strong>
+                    <button class="btn btn-info font-weight-bold" [class.btn-warning]="course.visible" (click)="course.visible = !course.visible"> {{ course.visible ? 'Visible' : 'Oculto' }} </button>
+                    <small>Si esta opción está habilitada el curso se podrá comprar, de lo contrario estará oculto y solo se podrá acceder si se le asignan permisos manualmente</small>
+                </div>
+            </div>
+            <div class="col-md-6 col-12" *ngIf="!course.visible" [@fadeIn]>
+                <div class="form-group mb-5 d-flex flex-column">
+                    <strong>Próximamente</strong>
+                    <button class="btn btn-info font-weight-bold" [class.btn-warning]="course.coming_soon" (click)="course.coming_soon = !course.coming_soon"> {{ course.cooming_soon ? 'Mostrar "Próximamente..."' : 'No mostrar' }} </button>
+                    <small>Si esta opción está habilitada el curso aparecerá con la etiqueta "Próximamente..." y solo se podrá ver su título y subtitulo</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-top pt-5 mt-5">
+            <h3>Instructores</h3>
+            <div *ngFor="let i of course.instructors;let ind = index" class="d-flex justify-content-between">
+                <app-instructor-detail [instructor]="i" class="my-3 d-block"></app-instructor-detail>
+                <div class="d-flex align-items-center">
+                    <app-icon icon="edit" size="big" class="p-4 pointer" (click)="editInstructor(i)"></app-icon>
+                    <app-icon icon="trash" size="big" class="p-4 pointer" (click)="removeInstructor(ind)"></app-icon>
+                </div>
+            </div>
+            
+            <p *ngIf="!course.instructors || course.instructors.length == 0">Aún no hay instructores asignados a este curso</p>
+            <button class="btn btn-info d-flex justify-content-center w-100 py-2" (click)="openInstructorSelectorAnCreator()"> <app-icon icon="plus"></app-icon> </button>
+        </div>
+
+        <div class="border-top pt-5 mt-5">
+            <h3>Contenido gratuito</h3>
+            
+            <h5>Video promocional</h5>
+            <div class="row mb-4">
+                <div class="col-12 col-md-6" *ngIf="!course.video">
+                    <app-file-uploader 
+                        [uploadService]="adminService" 
+                        [uploadMethod]="'uploadCourseVideo'" 
+                        [courseId]="course.id" 
+                        (fileUploaded)="courseVideoUploaded($event)"
+                        #imageUploader 
+                        [maxInMb]="100">
+                    </app-file-uploader>
+
+                </div>
+                <div class="col-12 col-md-6" *ngIf="course.video">
+                    <app-video-player *ngIf="course.video" [src]="course.getVideo()"></app-video-player>
+                    <button class="btn btn-danger font-weight-bold px-3 rounded-0 mt-2" (click)="course.video = null">Cambiar video</button>
+                </div>
+
+                
+            </div>
+
+
+            
+            <div class="row mt-4" *ngIf="course.id">
+                <div class="col-12 col-md-6">
+                    <h5>Buscar elementos</h5>
+                    <div class="d-flex mb-2">
+                        <input type="text" class="form-control" placeholder="Buscar elementos por su título..." [(ngModel)]="searchString">
+                        <button class="btn btn-secondary font-weight-bold rounded-0" (click)="searchElements()" showLoading [observable]="obs" [content]="'Buscar'"> Buscar </button>
+                        <button class="btn btn-danger font-weight-bold rounded-0" (click)="elements = null"> <app-icon icon="close" color="white"></app-icon> </button>
+                    </div>
+
+                    <ng-container *ngFor="let e of elements; let i = index">
+
+                        <div class="p-3 border border-radius d-flex justify-content-between" *ngIf="!isThisElementAlreadyAdded(e)">
+                            <div>
+                                {{e.title}}
+                                <div [innerHtml]="e.text"></div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <app-icon icon="angle-right" size="big" class="pointer" (click)="addFreeElement(e,i)"></app-icon>
+                            </div>
+                        </div>     
+
+                    </ng-container>
+                                  
+                    <div *ngIf="!elements || elements.length == 0">
+                        <i>No hay elementos para mostrar</i>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                        <h5>Lista de elementos gratuitos</h5>
+                        <div *ngFor="let e of course.free_elements; let i = index" class="p-3 border border-radius d-flex justify-content-between">
+                            <div>
+                                {{e.title}}
+                                <div [innerHtml]="e.text"></div>
+                            </div>
+                            <div class="d-flex align-items-center" (click)="removeFreeElement(i)">
+                                <app-icon icon="trash" size="big" class="pointer"></app-icon>
+                            </div>
+                        </div>                   
+                        <div *ngIf="course.free_elements && course.free_elements.length == 0">
+                            <i>No hay elementos agregados</i>
+                        </div>
+                        <div *ngIf="course.free_elements.length > 1" class="mt-2">
+                            <app-reorder class="d-none" [items]="course.free_elements" [wat]="'title'" [title]="'Reordenar elementos'"
+                                #reorder></app-reorder>
+                            <button class="btn btn-info font-weight-bold d-flex align-items-center px-4 py-2 rounded-0" (click)="doReorder()">
+                                Reordenar elementos
+                                <app-icon icon="playlist2" class="ml-2"></app-icon>
+                            </button>
+                        </div>
+                </div>
+                
+            </div>
+            <div class="row" *ngIf="!course.id">
+                <i> Guardá el curso y agregá contenido para añadir elementos gratuitos</i>
+            </div>
+
+            
+
+        </div>
+        
+
+        <div class="row mt-5">
+            <button class="btn btn-danger rounded-0 py-3 font-weight-bold col-6" (click)="cancel()">Cancelar</button>
+            <button class="btn btn-primary rounded-0 py-3 font-weight-bold col-6" (click)="saveCourse()">Guardar</button>
+        </div>
+    </div>
+</div>

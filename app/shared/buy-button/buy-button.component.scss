@@ -1,0 +1,21 @@
+@import "../../../bootstrap";
+
+.buy-button {
+  cursor:pointer;
+  overflow:hidden;
+  .cart {
+    padding: 15px 20px;
+    background: $sky-green;
+    border-top-left-radius: 10px; 
+    border-bottom-left-radius: 10px; 
+  }
+  .price {
+    padding: 14px;
+    background: $green;
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px; 
+    .buy {
+      font-size: 1.5rem;
+    }
+  }
+}

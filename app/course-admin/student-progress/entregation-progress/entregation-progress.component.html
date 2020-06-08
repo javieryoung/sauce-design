@@ -1,0 +1,57 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+
+</skeleton>
+
+<div class="row justify-content-center mb-4" [ngBusy]="busy">
+    <div class="col-lg-9 col-12 shadow bg-white p-lg-5 p-3" [@fadeIn]>
+        <div class="table-responsive">
+            <h1>Entrega </h1>
+            <div class="row">
+                <div class="col-12 col-md-4 d-flex flex-column justify-content-center" *ngIf="graphData">
+                    <h1 class="text-primary text-center">{{graphData[0]}} </h1>
+                    <h2 class="text-primary text-center">{{graphLabels[0]}}</h2>
+                </div>
+                <div class="col-12 col-md-4" *ngIf="graphData">
+                    <canvas baseChart
+                        [data]="graphData"
+                        [labels]="graphLabels"
+                        [chartType]="'pie'">
+                    </canvas>
+                </div>
+                <div class="col-12 col-md-4 d-flex flex-column justify-content-center" *ngIf="graphData">
+                        <h1 class="text-secondary text-center">{{graphData[1]}} </h1>
+                        <h2 class="text-secondary text-center">{{graphLabels[1]}}</h2>
+                </div>
+                <div class="col-12 my-5">
+                    <table class="table" *ngIf="entregation">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Veces que entrergó</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of students">
+                                <th scope="row">{{user.fullName()}} </th>
+                                <td>{{user.email}}</td>
+                                <td>{{user.entregation_responses.length }} </td>
+                                <td> <a [routerLink]="user.id" class="text-danger" *ngIf="user.entregation_responses.length"> Ver respuestas </a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

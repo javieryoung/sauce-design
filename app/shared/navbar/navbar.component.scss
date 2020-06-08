@@ -1,0 +1,28 @@
+.profile-picture{
+    height: 40px;
+    width: 40px;
+}
+
+.transparent {
+    box-shadow: none !important;
+    color: #fff;
+    .bg-white {
+        background: none !important;
+    }
+}
+
+.burger {
+    border:none;
+    background:none;
+}
+
+.cart {
+    position: relative;
+    .badge {
+        border-radius: 40px;
+        padding: 3px 5px;
+        position: absolute;
+        bottom: 3px;
+        right: 3px;
+    }
+}

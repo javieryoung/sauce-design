@@ -1,0 +1,10 @@
+<div class="d-flex">
+    <div class="w-200 mr-3">
+        <img src="{{instructor.getImage()}}" alt="instructor.name" class="radius">
+    </div>
+    <div class="d-flex flex-column justify-content-center">
+        <h3 class="mb-0 text-blue">  {{instructor.name}} </h3>
+        <h4 class="mb-3 text-warning"> {{instructor.title}} </h4>
+        <div [innerHtml]="instructor.description"></div>
+    </div>
+</div>

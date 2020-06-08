@@ -1,0 +1,80 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+
+</skeleton>
+
+<div class="row justify-content-center mb-4" [ngBusy]="busy">
+    <div class="col-lg-9 col-12 shadow bg-white p-lg-5 p-3" [@fadeIn]>
+        <h3>Agregar alumno / profesor</h3>
+        <div class="row my-2">
+            <div class="d-flex col-lg-6 col-12">
+                <input type="text" class="form-control" [(ngModel)]="findUser" placeholder="Buscar usuario...">
+                <button class="btn btn-primary rounded-0 font-weight-bold" (click)="stringChanged()"> buscar</button>
+            </div>
+        </div>
+
+        <div class="p-4 col-lg-10 col-12 d-flex bg-info my-3 align-items-center justify-content-between" *ngIf="userToAdd.id">
+            <div class="d-flex flex-column"> 
+                <span>Usuario: </span>
+                <span> <strong>{{userToAdd.fullName()}}</strong> </span>
+            </div>
+            <div class="d-flex flex-column">
+                <label>Rol</label>
+                <select class="form-control" style="width:300px" [(ngModel)]="role">
+                    <option value="admin">administrador</option>
+                    <option value="student">estudiante</option>
+                </select>
+            </div>
+            <div class="d-flex flex-column">
+                <label>Vencimiento: </label>
+                <input type="text" class="form-control" [dropSpecialCharacters]="false" [specialCharacters]="[ '/' ]" mask="00/00/0000" [(ngModel)]="expires_at" placeholder="dd/mm/aaaa">
+            </div>
+            <div>
+                <button class="btn btn-danger font-weight-bold rounded-0" (click)="addPermission(userToAdd)">Asignar permiso</button>
+            </div>
+        </div>
+
+        <div class="col-12 p-3 pointer border-bottom" *ngFor="let u of users" (click)="userToAdd = u">
+            <span class="text-primary font-weight-bold"> {{u.fullName()}}</span> - <span class="text-warning"> seleccionar </span>
+        </div>
+        <div class="col-12 p-3 " *ngIf="users && users.length == 0">
+            <span class="text-danger"> No se encontraron usuarios con esa búsqueda </span>
+        </div>
+        
+    </div>
+</div>
+
+<div class="row justify-content-center mb-4" [ngBusy]="busy">
+    <div class="col-lg-9 col-12 shadow bg-white p-lg-5 p-3" [@fadeIn]>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Vencimiento</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of permissions">
+                        <th scope="row">{{p.user.fullName()}} </th>
+                        <td>{{p.user.email}}</td>
+                        <td>{{p.translateRole() }} </td>
+                        <td *ngIf="p.expires_at">{{p.expires_at | date:'dd/MM/yyyy' }} </td>
+                        <td *ngIf="!p.expires_at"> <i>sin vencimiento</i> </td>
+                        <td> <a (click)="removePermission(p)" class="text-danger pointer"> eliminar </a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

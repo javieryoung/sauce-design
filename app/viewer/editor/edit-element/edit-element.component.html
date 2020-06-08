@@ -1,0 +1,121 @@
+<div class="row d-flex justify-content-center" *ngIf="!element.type">
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="element.type = 'Bloque de texto'">
+            <app-icon size="huge" icon="text"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Bloque de texto</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="element.type = 'Foro'">
+            <app-icon size="huge" icon="chat6"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Foro</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3" >
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="closeModal()" [routerLink]="'/ver/' + courseId + '/capitulo/' + chapterId + '/tab/' + tabId + '/editar-evaluacion/nueva'">
+            <app-icon size="huge" icon="clipboard-check"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Evaluación</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3" >
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="element.type = 'Entrega'">
+            <app-icon size="huge" icon="uploaded-file"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Entrega</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="element.type = 'Descargable'">
+            <app-icon size="huge" icon="downloadedfile"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Descargable</p>
+        </div>
+    </a>
+    <a class="col-6 col-md-4 p-3">
+        <div class="bg-light pointer d-flex p-3 flex-column align-items-center" (click)="element.type = 'Video'">
+            <app-icon size="huge" icon="play"></app-icon>
+            <p class="m-0 mt-1 font-weight-bold">Video</p>
+        </div>
+    </a>
+    <div class="col-12 d-flex justify-content-center">
+        <button class="btn btn-danger font-weight-bold py-2 px-5 rounded-0" (click)="close();">
+            Cancelar
+        </button>
+    </div>
+    
+</div>
+
+<div *ngIf="element.type" [ngBusy]="busy">
+    <div class="d-flex align-items-center mb-2">
+        <input type="text" class="form-control title" [(ngModel)]="element.title" placeholder="Título">
+        <app-icon *ngIf="element.id" icon="trash" size="big" class="p-2 pointer" (click)="deleteElement(element)"></app-icon>
+    </div>
+    <ckeditor 
+        [editor]="Editor" [(ngModel)]="element.text" 
+        [config]="{ language: 'es', toolbar: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Párrafo', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h2', title: 'Subtítulo', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h3', title: 'Cabezal', class: 'ck-heading_heading2' }
+                ]
+            }
+        }"></ckeditor>
+
+    <div *ngIf="element.type == 'Foro'" class="mt-2">
+        <strong> <i> El foro se creará automáticamente </i> </strong>
+    </div>
+
+    <div *ngIf="element.type == 'Descargable'" class="mt-2">
+        <div *ngIf="element.file && element.file.file_name" class="bg-white p-3 mb-2">
+            <editable [content]="element.file.file_name"
+                (changed)="element.file.file_name = $event" type="p"
+                class="d-flex mb-3">
+                <div [innerHTML]="element.file.file_name"></div>
+            </editable>
+            <a href="{{element.file.getUrl()}}" target="_blank" class="d-flex my-3"><app-icon icon="download" color="primary" class="mr-2"></app-icon>  descargar documento </a>
+            <a class="text-danger pointer" (click)="deleteFile(element)">Eliminar este documento</a>
+        </div>
+        
+
+        <div *ngIf="!(element.file && element.file.file_name)">
+            <app-file-uploader [uploadService]="courseEditorService" [courseId]="courseId" (fileUploaded)="fileUploaded($event, element)"></app-file-uploader>
+        </div>
+    </div>
+
+    <div *ngIf="element.type == 'Entrega'" class="mt-2">
+            <div class="form-group mt-5">
+                <label>Fecha y hora de entrega</label>
+                <div class="d-flex">
+                    <input type="text" class="form-control col-6" [dropSpecialCharacters]="false" [specialCharacters]="[ '/' ]" mask="00/00/0000" [(ngModel)]="element.entregation.expires_at_date" placeholder="dd/mm/aaaa">
+                    <input type="text" class="form-control col-6" [dropSpecialCharacters]="false" mask="Hh:m0" [(ngModel)]="element.entregation.expires_at_time" placeholder="hh:mm">
+                </div>
+                <small id="emailHelp" class="form-text text-muted">Ej. 18/05/2020</small>
+            </div>
+            <div class="form-group mt-5">
+                <label>Tipo de entrega</label>
+                
+                <select class="form-control" [(ngModel)]="element.entregation.type" placholder="Individual/Gruapl">
+                    <option value="Individual">Individual</option>
+                    <option value="Grupal">Grupal</option>
+                </select>
+
+                <small id="emailHelp" class="form-text text-muted" *ngIf="element.entregation.type == 'Grupal'">Cuando los alumnos realicen una entrega podrán elegir quienes son sus compañeros de grupo</small>
+                <small id="emailHelp" class="form-text text-muted" *ngIf="element.entregation.type == 'Individual'">Cada alumno podrá hacer una entrega</small>
+            </div>
+            
+        
+    </div>
+
+
+
+    <div *ngIf="element.type == 'Video'" class="mt-2">
+        <input type="text" class="form-control" [(ngModel)]="element.video.link" placeholder="Link al video">
+        <i>El link debe tener la siguiente forma: https://www.youtube.com/watch?v=dQw4w9WgXcQ</i> <br>
+        <i>Si no se respeta el formato el video puede fallar</i>
+    </div>
+    
+    
+    <div class="mt-3">
+        <button class="col-6 btn btn-danger font-weight-bold rounded-0" (click)="close()">Cancelar</button>
+        <button class="col-6 btn btn-primary font-weight-bold rounded-0" (click)="save()">Guardar</button>
+    </div>
+</div>

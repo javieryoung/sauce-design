@@ -1,0 +1,19 @@
+<div class="post d-flex border-bottom border-left border-right py-4 px-3">
+    <div class="profile d-flex flex-column align-items-center">
+        <img src="{{post.user.imageUrl()}}" alt="{{post.user.fullName()}}"
+            class="profile-picture rounded-circle mb-2" width="50px" height="50px">
+        <small class="text-muted">{{post.created_at | date:'dd/MM/yyyy'}} </small>
+    </div>
+    <div class="post pl-3">
+        <div class="d-flex"> 
+            <span class="text-warning"> {{post.user.fullName()}}  </span>
+            <span class="text-primary d-flex ml-4 pointer" (click)="sendReply(post)" *ngIf="showReply"> <app-icon icon="chat5" color="primary" class="mr-2"></app-icon> Responder</span> </div>
+        <h3>{{post.title}} </h3>
+        <div [innerHTML]="post.text"></div>
+    </div>
+</div>
+<div *ngIf="showChildren">
+    <div *ngFor="let c of post.children" class="pl-4">
+        <app-comment [post]="c" (reply)="sendReply($event)"></app-comment>
+    </div>
+</div>

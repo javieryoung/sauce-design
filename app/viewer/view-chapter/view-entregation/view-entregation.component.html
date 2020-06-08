@@ -1,0 +1,85 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+</skeleton>
+
+
+
+
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-9 col-12 shadow p-lg-5 p-3 bg-white" [@fadeIn] *ngIf="entregation" [ngBusy]="busy">
+        <h1> {{entregation.element.title}} </h1>
+        <div [innerHTML]="entregation.element.text"></div>
+        <div class="d-flex flex-column">
+
+            <div *ngIf="entregation.expires_at && entregation.expires_at < today" class="mb-3">
+                <span class="text-danger">La entrega de esta evaluación estaba habilitada hasta 
+                    <strong> {{entregation.expires_at | date:'dd/MM/yyyy HH:mm'}} </strong>
+                </span>
+            </div>
+
+            <div *ngIf="entregation.expires_at && entregation.expires_at > today" class="mb-3">
+                <span class="text-warning">La entrega de esta evaluación estará habilitada hasta
+                    <strong>{{entregation.expires_at | date:'dd/MM/yyyy HH:mm'}} </strong></span>
+            </div>
+
+            <div class="mt-3"
+                *ngIf="entregation.entregation_responses && entregation.entregation_responses.length && !doEntregation && !viewEntregationResponse">
+                <h4>Ya completaste esta entrega anteriormente:</h4>
+                <div *ngFor="let er of entregation.entregation_responses"
+                    class="p-3 border-bottom d-flex align-items-center text-dark justify-content-between">
+                    <span> <span class="text-warning font-weight-bold">
+                            {{er.created_at | date:'dd/MM/yyyy HH:mm'}}</span> </span>
+                    <button class="btn btn-warning text-white" (click)="clickedEntregation(er)">ver</button>
+                </div>
+                <div *ngIf="!entregation.expires_at || entregation.expires_at > today">
+                    <button class="col-12 mt-4 btn btn-secondary text-white font-weight-bold"
+                        (click)="reDoEntregation()"> Completar nuevamente </button>
+                </div>
+            </div>
+
+            <div *ngIf="!entregation.entregation_responses || entregation.entregation_responses.length == 0 || doEntregation">
+
+                <div *ngIf="!viewEntregationResponse || !viewEntregationResponse.file">
+                    <app-file-uploader [params]="{id: entregation.id}" [uploadService]="courseViewerService" [courseId]="courseId" (fileUploaded)="reload()" buttonText="Subir mi entrega"></app-file-uploader>
+                </div>
+
+            </div>
+
+            <div *ngIf="viewEntregationResponse">
+                <button (click)="viewEntregationResponse = null" class="btn btn-danger mb-1 px-3 py-1 rounded-0 d-flex"> <app-icon class="mr-2" icon="angle-left" color="white"></app-icon> Volver a la lista de entregas</button>
+                <div *ngIf="viewEntregationResponse" class="bg-white p-3 mt-2 mb-2 border">
+                    <h4>Tu entrega:</h4>
+                    <p> {{viewEntregationResponse.file.file_name}} </p>
+                    <a href="{{viewEntregationResponse.file.getUrl()}}" target="_blank" class="d-flex my-3"><app-icon icon="download" color="primary" class="mr-2"></app-icon>  descargar entrega </a>
+                </div>
+                
+        
+
+
+                <div class="bg-info p-3 mt-5">
+                    <h3 class="my-3">Discusión sobre la entrega</h3>
+                    <app-post *ngIf="viewEntregationResponse.post" [post]="viewEntregationResponse.post"
+                        [courseId]="courseId" (posted)="reload()"></app-post>
+                </div>
+
+            </div>
+
+            
+        </div>
+    </div>
+</div>

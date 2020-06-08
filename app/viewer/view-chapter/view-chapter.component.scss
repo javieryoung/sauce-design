@@ -1,0 +1,26 @@
+.chapters-drop {
+    top: 3rem;
+    max-width: 100%;
+    min-width: 300px;
+    z-index:99;
+    & > div {
+        margin-top: -1px;
+    }
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+.arrow-down-what {
+    transition: all 0.2s linear;
+}
+
+
+.tabs-container {
+    width: 100%;
+    overflow-x: auto;
+    .tabs {
+        width: max-content;
+        min-width: 100%;
+    }
+}

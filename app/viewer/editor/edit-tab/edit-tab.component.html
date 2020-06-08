@@ -1,0 +1,16 @@
+<div [ngBusy]="busy">
+    <input type="text" class="form-control title mb-2" [(ngModel)]="tab.title" placeholder="Título">
+    
+    <button class="btn btn-danger rounded-0 font-weight-bold" *ngIf="tab.id" (click)="delete()">Eliminar esta tab</button>
+    
+    <div class="d-flex align-items-center my-3">
+        <app-icon class="mr-2" icon="lock-circle" *ngIf="!tab.published"></app-icon>
+        <app-icon class="mr-2" icon="done-circle" *ngIf="tab.published"></app-icon>
+        <strong class="mr-2">Tab publicada </strong>
+        <ui-switch [(ngModel)]="tab.published" size="small"></ui-switch>
+    </div>
+    <div class="mt-3">
+        <button class="col-6 btn btn-danger font-weight-bold rounded-0" (click)="close(false)">Cancelar</button>
+        <button class="col-6 btn btn-primary font-weight-bold rounded-0" (click)="save()">Guardar</button>
+    </div>
+</div>

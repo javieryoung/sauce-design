@@ -1,0 +1,46 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+</skeleton>
+
+
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-9 col-12 shadow p-lg-5 p-3 bg-white" *ngIf="user" [@fadeIn] [ngBusy]="busy">
+        <h1>Entrega</h1>
+        <div class="d-flex flex-column">
+
+            <div *ngFor="let er of user.entregation_responses" class="my-3 bg-info p-lg-5 p-3">
+                <h3>Completada el {{er.created_at | date:'dd/MM/yyyy HH:mm'}} </h3>
+
+                <div class="bg-white p-3 mt-2 mb-2 border">
+                    <p> {{er.file.file_name}} </p>
+                    <a href="{{er.file.getUrl()}}" target="_blank" class="d-flex my-3"><app-icon icon="download" color="primary" class="mr-2"></app-icon>  descargar entrega </a>
+                </div>
+                
+                <div *ngIf="er.post">
+                    <h3 class="mt-5">Discusión sobre la tarea</h3>
+                    <div class="bg-info my-3">
+                        <app-post *ngIf="er.post" [post]="er.post" [courseId]="courseId" (posted)="reload()"></app-post>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

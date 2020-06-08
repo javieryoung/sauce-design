@@ -1,0 +1,16 @@
+<button 
+    class="btn btn-orange text-white font-weight-bold rounded-0 py-3" 
+    (click)="start()"
+    showLoading 
+    [observable]="obs" 
+    [content]="'Comenzar videoconferencia'"
+    [hidden]="started">Comenzar videoconferencia</button>
+
+
+
+<div id="meet" [hidden]="!started">
+
+</div>
+<button class="w-100 btn btn-danger text-white font-weight-bold rounded-0 py-3" *ngIf="started" (click)="end()">
+    Finalizar videoconferencia
+</button>

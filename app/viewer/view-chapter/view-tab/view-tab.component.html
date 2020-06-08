@@ -1,0 +1,27 @@
+
+
+<div class="d-flex flex-column border border-top-0 w-100 p-lg-4 p-3 bg-white shadow" [ngBusy]="busy" *ngIf="tab">
+    <div *ngIf="canEdit && tab.elements && tab.elements.length > 1" class="mb-3">
+        <app-reorder class="d-none" [items]="tab.elements" [wat]="'title'" [title]="'Reordenar elementos'" (saved)="updateElementOrder()"
+            #reorder></app-reorder>
+        <button class="btn btn-info font-weight-bold d-flex align-items-center px-4 py-2 rounded-0" (click)="doReorder()">
+            Reordenar elementos
+            <app-icon icon="playlist2" class="ml-2"></app-icon>
+        </button>
+    </div>
+
+    
+
+    <div class="element px-1 pt-5 pb-3 row d-flex justify-content-center" *ngFor="let e of tab.elements">
+        <app-element class="col-12" [element]="e" [canEdit]="canEdit" [tabId]="tab.id" (deleted)="reload()"></app-element>
+        <div class="col-6 mt-5 border-bottom"></div>
+    </div>
+
+
+    <div *ngIf="canEdit">
+        <button class="btn btn-primary py-2 d-flex font-weight-bold justify-content-center w-100" (click)="openElementEditor({tab_id: tab.id})">
+            Agregar nuevo elemento <app-icon icon="plus" color="white" class="ml-2"></app-icon> 
+        </button>
+    </div>
+
+</div>

@@ -1,0 +1,100 @@
+<skeleton *ngIf="obs" [observable]="obs">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+            <h1 class="skeleton"></h1>
+            <p class="skeleton l-1"></p>
+            <p class="skeleton l-2"></p>
+            <p class="skeleton l-3"></p>
+        </div>
+    </div>
+</skeleton>
+
+
+
+
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-9 col-12 shadow p-lg-5 p-3 bg-white" [@fadeIn] *ngIf="evaluation" [ngBusy]="busy">
+            <h1> {{evaluation.element.title}} </h1>
+            <div [innerHTML]="evaluation.element.text"></div>
+        <div class="d-flex flex-column">
+
+            <div *ngIf="evaluation.expires_at && evaluation.expires_at < today" class="mb-3">
+                <span class="text-danger">La entrega de esta evaluación estaba habilitada hasta <strong> {{evaluation.expires_at | date:'dd/MM/yyyy HH:mm'}} </strong></span>
+            </div>
+
+            <div *ngIf="evaluation.expires_at && evaluation.expires_at > today" class="mb-3">
+                <span class="text-warning">La entrega de esta evaluación estará habilitada hasta <strong>{{evaluation.expires_at | date:'dd/MM/yyyy HH:mm'}} </strong></span>
+            </div>
+
+            <div *ngIf="evaluation.evaluation_responses && evaluation.evaluation_responses.length && !doEvaluation && !viewEvaluationResponse">
+                <h4>Ya completaste esta evaluación anteriormente:</h4>
+                <div *ngFor="let er of evaluation.evaluation_responses" class="p-3 border-bottom d-flex align-items-center text-dark justify-content-between">
+                    <span> <span class="text-warning font-weight-bold"> {{er.created_at | date:'dd/MM/yyyy HH:mm'}}</span> </span>
+                    <button class="btn btn-warning text-white" (click)="clickedEvaluation(er)">ver</button>
+                </div>
+                <div *ngIf="!evaluation.expires_at || evaluation.expires_at > today">
+                    <button class="col-12 mt-4 btn btn-secondary text-white font-weight-bold" (click)="reDoEvaluation()"> Completar nuevamente </button>
+                </div>
+            </div>
+
+            <div *ngIf="viewEvaluationResponse">
+                <button (click)="viewEvaluationResponse = null" class="btn btn-danger mb-1 px-3 py-1 rounded-0 d-flex"> <app-icon class="mr-2" icon="angle-left" color="white"></app-icon> Volver a la lista de entregas</button>
+                <h3 class="mt-5">Respuestas</h3>
+                <app-evaluation-response [evaluation]="evaluation" [response]="viewEvaluationResponse"></app-evaluation-response>
+            </div>
+
+            <div *ngIf="doEvaluation && !viewEvaluationResponse" id="target">
+                <div class="exercise p-3 border-bottom" *ngFor="let ex of evaluation.exercises">
+                    
+                    <div class="mb-3" [innerHTML]="ex.text"></div>
+                    
+                    <div *ngIf="ex.type == 'Texto libre'">
+                        <ckeditor [editor]="Editor"
+                        *ngIf="ex.config && ex.config.rich_text"
+                        [(ngModel)]="form[ex.id]"
+                        [config]="{ language: 'es', toolbar: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+                            heading: {
+                                options: [
+                                    { model: 'paragraph', title: 'Párrafo', class: 'ck-heading_paragraph' },
+                                    { model: 'heading1', view: 'h2', title: 'Subtítulo', class: 'ck-heading_heading1' },
+                                    { model: 'heading2', view: 'h3', title: 'Cabezal', class: 'ck-heading_heading2' }
+                                ]
+                            }
+                        }"></ckeditor>
+                        <input type="text" placeholder="Tu respuesta..." class="form-control" *ngIf="!ex.config || !ex.config.rich_text" [(ngModel)]="form[ex.id]">
+                    </div>
+
+                    <div *ngIf="ex.type == 'Multiple opción'">
+                        <label class="m-0 check" *ngFor="let option of ex.options">
+                            <p class="m-0" > {{option}} </p>
+                            <input type="checkbox" name="radio-{{ex.id}}" [checked]="form[ex.id] && form[ex.id].indexOf(option) != -1" (change)="addToCheck($event, ex.id, option)" [value]="option">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+
+
+
+                    <div *ngIf="ex.type == 'Única opción'">
+                        <label class="m-0" *ngFor="let option of ex.options" class="radio">
+                            <p class="m-0"> {{option}} </p>
+                            <input type="radio" name="radio-{{ex.id}}" [value]="option" [(ngModel)]="form[ex.id]" (ngModelChange)="form[ex.id] = option">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+
+
+                </div>
+                <button class="col-12 mt-4 btn btn-secondary text-white font-weight-bold" (click)="saveEvaluation()"> Finalizar evaluación</button>
+            </div>
+
+        </div>
+    </div>
+</div>
