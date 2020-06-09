@@ -1,10 +1,10 @@
-<div class="row justify-content-center">
+<div class="row justify-content-center" *ngIf="myCourses && myCourses.length">
     <div class="col-lg-10 col-12 d-flex flex-column flex-wrap">
 
         <h1> <strong> Mis cursos</strong></h1>
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-3 col-lg-2" *ngFor="let c of myCourses">
-                <app-course-square [course]="c" class="pointer p-2" [routerLink]="'/ver/' + c.id"></app-course-square>
+        <div class="d-flex flex-wrap">
+            <div class="mr-4" *ngFor="let c of myCourses">
+                <app-my-course [course]="c" class="p-2"></app-my-course>
             </div>
         </div>
 

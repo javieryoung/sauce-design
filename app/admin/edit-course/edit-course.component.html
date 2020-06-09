@@ -158,12 +158,12 @@
                     <ng-container *ngFor="let e of elements; let i = index">
 
                         <div class="p-3 border border-radius d-flex justify-content-between" *ngIf="!isThisElementAlreadyAdded(e)">
-                            <div>
-                                {{e.title}}
-                                <div [innerHtml]="e.text"></div>
+                            <div class="d-flex">
+                                <app-icon [icon]="e.getIcon()" class="mr-3"></app-icon>
+                                <span>{{e.title}}</span>
                             </div>
                             <div class="d-flex align-items-center">
-                                <app-icon icon="angle-right" size="big" class="pointer" (click)="addFreeElement(e,i)"></app-icon>
+                                <app-icon icon="angle-right" class="pointer" (click)="addFreeElement(e,i)"></app-icon>
                             </div>
                         </div>     
 
@@ -176,12 +176,12 @@
                 <div class="col-12 col-md-6">
                         <h5>Lista de elementos gratuitos</h5>
                         <div *ngFor="let e of course.free_elements; let i = index" class="p-3 border border-radius d-flex justify-content-between">
-                            <div>
-                                {{e.title}}
-                                <div [innerHtml]="e.text"></div>
+                            <div class="d-flex">
+                                <app-icon [icon]="e.getIcon()" class="mr-3"></app-icon>
+                                <span>{{e.title}}</span>
                             </div>
                             <div class="d-flex align-items-center" (click)="removeFreeElement(i)">
-                                <app-icon icon="trash" size="big" class="pointer"></app-icon>
+                                <app-icon icon="trash" class="pointer"></app-icon>
                             </div>
                         </div>                   
                         <div *ngIf="course.free_elements && course.free_elements.length == 0">

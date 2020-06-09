@@ -57,19 +57,10 @@
                 <ui-switch [(ngModel)]="exercise.config.rich_text" size="small"></ui-switch>
             </div>
             <div *ngIf="exercise.config.rich_text">
-                <ckeditor [editor]="Editor" [data]="'Ejemplo de texto enriquecido'"
-                    [config]="{ language: 'es', toolbar: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
-                        heading: {
-                            options: [
-                                { model: 'paragraph', title: 'Párrafo', class: 'ck-heading_paragraph' },
-                                { model: 'heading1', view: 'h2', title: 'Subtítulo', class: 'ck-heading_heading1' },
-                                { model: 'heading2', view: 'h3', title: 'Cabezal', class: 'ck-heading_heading2' }
-                            ]
-                        }
-                }"></ckeditor>
+                <i>El usuario podrá escribir en negrita, en itálicas, agregar links o incluir cabezales</i>
             </div>
             <div *ngIf="!exercise.config.rich_text">
-                <input type="text" class="form-control w-100" placeholder="Ejemplo de texto no enriquecido">
+                    <i>El usuario solo podrá escribir su respuesta en texto plano</i>
             </div>
         </div>
     </div>

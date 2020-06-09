@@ -1,20 +1,17 @@
 <skeleton *ngIf="obs" [observable]="obs">
     <div class="row justify-content-center mb-4">
-        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
-            <h1 class="skeleton"></h1>
-        </div>
-    </div>
-
-    <div class="row justify-content-center mb-4">
-        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
-            <h1 class="skeleton"></h1>
-        </div>
-    </div>
-
-    <div class="row justify-content-center mb-4">
-        <div class="col-lg-9 col-12 shadow p-lg-5 p-3 skeleton dad">
-            <h1 class="skeleton"></h1>
-        </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2 shadow p-lg-5 p-3 mr-3 skeleton dad">
+                <h1 class="skeleton"></h1>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2 shadow p-lg-5 p-3 mr-3 skeleton dad">
+                <h1 class="skeleton"></h1>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2 shadow p-lg-5 p-3 mr-3 skeleton dad">
+                <h1 class="skeleton"></h1>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2 shadow p-lg-5 p-3 mr-3 skeleton dad">
+                <h1 class="skeleton"></h1>
+            </div>
     </div>
 
     <div class="row justify-content-center mb-4">
@@ -25,15 +22,16 @@
 
 </skeleton>
 
-<div class="row justify-content-center mb-2 mt-3" *ngFor="let c of courses">
-    <div class="col-lg-9 col-12 text-secondary bg-white shadow p-4 pointer" [@fadeIn] [routerLink]="'curso/' + c.id">
-        <h2>{{c.title}}</h2>
-        <h4> {{c.subtitle}} </h4>
+<div class="d-flex justify-content-center flex-wrap mb-2 mt-3">
+    <div class="d-flex flex-column my-5 mx-3 course" *ngFor="let c of courses">
+        <app-course-square [course]="c"></app-course-square>
+        <button class="btn btn-danger font-weight-bold rounded-0 py-2" [routerLink]="'curso/' + c.id">Metadatos</button>
+        <button class="btn btn-primary font-weight-bold rounded-0 py-2" [routerLink]="'/admin/' + c.id + '/dashboard'">Contenido y permisos</button>
     </div>
 </div>
 <div class="row justify-content-center mb-2 mt-3">
-    <div class="col-lg-9 col-12 bg-white shadow p-4 pointer d-flex" [@fadeIn] [routerLink]="'curso/nuevo'">
-        <app-icon icon="plus" size="big" class="px-3"></app-icon>
-        <h2>Crear nuevo curso</h2>
-    </div>
+    <button class="col-12 col-lg-9 shadow p-2 pointer d-flex btn btn-secondary font-weight-bold align-items-center justify-content-center" [@fadeIn] [routerLink]="'curso/nuevo'">
+        <app-icon icon="plus" size="big" class="px-3" color="white"></app-icon>
+        <h4 class="m-0">Crear nuevo curso</h4>
+    </button>
 </div>

@@ -32,7 +32,7 @@
 
 <div class="row justify-content-center mb-2 mt-3" *ngIf="chapter">
     <div class="col-lg-9 col-12 text-secondary d-flex align-items-center position-relative" [@fadeIn]>
-        <app-icon icon="angle-left" size="big" color="secondary" class="pointer px-2" [routerLink]="'/ver/' + chapter.course.id"></app-icon>
+        <app-icon icon="angle-left" size="big" color="secondary" class="pointer px-2" (click)="goBack()"></app-icon>
         <h1 class="m-0" (click)="toggleShow()">{{chapter.title}} </h1>        
     </div>
 </div>

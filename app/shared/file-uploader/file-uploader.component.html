@@ -5,7 +5,10 @@
     </div>
 </div>
 
-<button class="btn btn-primary rounded-0 font-weight-bold px-3 my-2 py-2" (click)="onClick()"> {{buttonText}} </button>
+<button class="btn btn-primary rounded-0 font-weight-bold px-3 my-2 py-2" (click)="onClick()">
+    <span *ngIf="!uploading"> {{buttonText}} </span>
+    <img src="/assets/loader.svg" alt="loader" width="50px" *ngIf="uploading">
+</button>
 
 <input type="file" #fileUpload id="fileUpload" name="fileUpload" style="display:none;" />
 <!-- MULTIPLE TODO: <input type="file" #fileUpload id="fileUpload" name="fileUpload" multiple="multiple" accept="image/*" style="display:none;" /> -->

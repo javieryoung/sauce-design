@@ -6,32 +6,36 @@
                 <img src="{{course.getCoverImage()}}" alt="{{course.title}}" class="w-100 radius">
                 <img src="/assets/images/play.png" alt="play" class="play" *ngIf="(course.free_elements && course.free_elements.length) || course.video">
             </div>
-            <div class="col-5 py-5 d-flex align-items-center">
-                <div>
-                    <img src="{{course.getImage()}}" alt="{{course.title}}" class="radius course-image">
-                </div>
-                <div class="pl-3">
-                    <div class="d-flex flex-column justify-content-center"> 
-                        <h1 class="mb-0 mr-2"> 
-                            <strong class="text-primary"> ${{course.price}}</strong> 
-                        </h1>
-                        <p class="mb-0" *ngIf="course.total_price && course.total_price > course.price"> 
-                            <span class="tachated mr-2"> ${{course.total_price}} </span> 
-                            <strong class="text-danger"> {{(course.price * 100) / course.total_price | number: '1.0-0'}}% de descuento </strong>
-                        </p>
+            <div class="col-12 d-flex md-flex-column align-items-center py-5">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <img src="{{course.getImage()}}" alt="{{course.title}}" class="radius course-image">
                     </div>
-                    <app-buy-button (click)="buy()"></app-buy-button>
+                    <div class="pl-3">
+                        <div class="d-flex flex-column justify-content-center"> 
+                            <h1 class="mb-0 mr-2"> 
+                                <strong class="text-primary"> ${{course.price}}</strong> 
+                            </h1>
+                            <p class="mb-0" *ngIf="course.total_price && course.total_price > course.price"> 
+                                <span class="tachated mr-2"> ${{course.total_price}} </span> 
+                                <strong class="text-danger"> {{(course.price * 100) / course.total_price | number: '1.0-0'}}% de descuento </strong>
+                            </p>
+                        </div>
+                        <app-buy-button (click)="buy()"></app-buy-button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-7 py-5 d-flex flex-column justify-content-center">
-                <div [innerHtml]="course.description"></div>
-                <p class="text-warning h5 mt-2" *ngIf="course.students && course.students >= 10"> {{course.students}} estudiantes prepararon este curso  </p>
+                <div>
+                    <div class="pl-3 d-flex flex-column justify-content-center">
+                        <div [innerHtml]="course.description"></div>
+                        <p class="text-warning h5 mt-2" *ngIf="course.students && course.students >= 10"> {{course.students}} estudiantes prepararon este curso  </p>
+                    </div>
+                </div>
             </div>
 
         </div>
 
         <div class="row border-top border-bottom border-grey py-5">
-            <div *ngFor="let i of course.instructors" class="col-12">
+            <div *ngFor="let i of course.instructors" class="col-12 my-2">
                 <app-instructor-detail [instructor]="i"></app-instructor-detail>
             </div>
         </div>

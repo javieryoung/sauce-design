@@ -13,6 +13,9 @@
 <div class="row justify-content-center mb-4" [ngBusy]="busy">
     <div class="col-lg-9 col-12 shadow bg-white p-lg-5 p-3" [@fadeIn]>
         
+        <div *ngIf="!chapters || chapters.length == 0" class="mb-3 pb-3 border-bottom">
+            <i>Parece que este curso no tiene ninguna evaluación o entrega creada</i>
+        </div>
         
         <div *ngFor="let c of chapters" class="mb-3 pb-3 border-bottom">
             <h2 class="mb-2">{{c.title}}</h2>

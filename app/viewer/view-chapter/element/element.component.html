@@ -29,7 +29,7 @@
         <button class="btn btn-warning rounded-0 text-white font-weight-bold mt-2" [routerLink]="'/ver/' + courseId + '/capitulo/' + chapterId + '/tab/' + tabId + '/evaluacion/' + element.id"> Realizar la evaluación </button>
     </div>
 
-    <div *ngIf="element.type == 'Video'">
+    <div *ngIf="element.type == 'Video'" class="d-flex justify-content-center">
         <div *ngIf="element.video && element.video.link">
             <iframe width="560" height="315" [src]="fixUrl(element.video.link)" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
